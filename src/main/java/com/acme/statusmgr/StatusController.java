@@ -1,6 +1,6 @@
 package com.acme.statusmgr;
 
-import com.acme.statusmgr.beans.ServerStatus;
+import com.acme.statusmgr.beans.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +32,7 @@ public class StatusController {
     protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
 
+
     /**
      * Process a request for server status information
      *
@@ -52,23 +53,58 @@ public class StatusController {
      * @param name    optional param identifying the requester
      * @param details optional param with a list of server status details being requested
      * @return a ServerStatus object containing the info to be returned to the requestor
-     *      * @apiNote TODO since Spring picks apart the object returned with Reflection and doesn't care what the return-object's type is, we can change the type of object we return if necessary
+     * * @apiNote TODO since Spring picks apart the object returned with Reflection and doesn't care what the return-object's type is, we can change the type of object we return if necessary
      */
     @RequestMapping("/status/detailed")
-    public ServerStatus getDetailedStatus(
+    public ServerInterface getDetailedStatus(
             @RequestParam(value = "name", defaultValue = "Anonymous") String name,
             @RequestParam List<String> details) {
 
-        ServerStatus detailedStatus = null;
+        ServerInterface detailedStatus = new ServerStatus(counter.incrementAndGet(),
+                String.format(template, name));
 
         if (details != null) {
             Logger logger = LoggerFactory.getLogger("StatusController");
             logger.info("Details were provided: " + Arrays.toString(details.toArray()));
 
-            //todo Should do something with all these details that were requested
+            for (String currentDetail : details) {
+                switch (currentDetail) {
+                    case "availableProcessors" -> {
+                        detailedStatus = new AvailableProcessors(detailedStatus);
+                        logger.info(detailedStatus.getStatusDesc());
+                    }
+                    case "freeJVMMemory" -> {
+                        detailedStatus = new FreeJVMMemory(detailedStatus);
+                        logger.info(detailedStatus.getStatusDesc());
+                    }
+                    case "totalJVMMemory" -> {
+                        detailedStatus = new TotalJVMMemory(detailedStatus);
+                        logger.info(detailedStatus.getStatusDesc());
+                    }
+                    case "jreVersion" -> {
+                        detailedStatus = new JreVersion(detailedStatus);
+                        logger.info(detailedStatus.getStatusDesc());
+                    }
+                    case "tempLocation" -> {
+                        detailedStatus = new TempLocation(detailedStatus);
+                        System.out.println(detailedStatus.getStatusDesc());
+                    }
+                    default -> System.out.println("Unknown server detail: " + currentDetail);
+                }
 
+//                 String statusDesc = buildStatusDesc();
 
+                //todo Should do something with all these details that were requested
+            }
         }
-        return detailedStatus; //todo shouldn't just return null
-    }
+
+            return detailedStatus; //todo shouldn't just return null
+        }
+
+//    private String buildStatusDesc() {
+//        return null;
+//    }
+
+
 }
+
