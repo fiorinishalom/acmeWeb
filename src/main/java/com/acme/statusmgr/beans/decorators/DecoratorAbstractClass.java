@@ -1,16 +1,19 @@
-package com.acme.statusmgr.beans;
+package com.acme.statusmgr.beans.decorators;
 
 import com.acme.servermgr.ServerManager;
+import com.acme.statusmgr.beans.ServerInterface;
+import com.acme.statusmgr.beans.facade.DetailFacadeInterface;
 
 public abstract class DecoratorAbstractClass implements ServerInterface {
     /**
      * requestCost constant will have to be changed if we change costs or calc dynamically
      */
     protected ServerInterface compiledDetails;
-    // Some info about the request
 
-    public DecoratorAbstractClass(ServerInterface compiledDetails) {
+    protected DetailFacadeInterface detailFacade;
+    public DecoratorAbstractClass(ServerInterface compiledDetails, DetailFacadeInterface detailFacade) {
         this.compiledDetails = compiledDetails;
+        this.detailFacade = detailFacade;
     }
 
     /**

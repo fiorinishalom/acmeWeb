@@ -1,6 +1,10 @@
 package com.acme.statusmgr;
 
 import com.acme.statusmgr.beans.*;
+import com.acme.statusmgr.beans.decorators.*;
+import com.acme.statusmgr.beans.facade.DetailFacade;
+import com.acme.statusmgr.beans.facade.DetailFacadeInterface;
+import com.acme.statusmgr.beans.facade.MockDetailFacade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +35,7 @@ public class StatusController {
 
     protected static final String template = "Server Status requested by %s";
     protected final AtomicLong counter = new AtomicLong();
+    private DetailFacadeInterface detailFacade = new DetailFacade();
 
 
     /**
@@ -70,23 +75,23 @@ public class StatusController {
             for (String currentDetail : details) {
                 switch (currentDetail) {
                     case "availableProcessors" -> {
-                        detailedStatus = new AvailableProcessors(detailedStatus);
+                        detailedStatus = new AvailableProcessors(detailedStatus, detailFacade);
                         logger.info(detailedStatus.getStatusDesc());
                     }
                     case "freeJVMMemory" -> {
-                        detailedStatus = new FreeJVMMemory(detailedStatus);
+                        detailedStatus = new FreeJVMMemory(detailedStatus, detailFacade);
                         logger.info(detailedStatus.getStatusDesc());
                     }
                     case "totalJVMMemory" -> {
-                        detailedStatus = new TotalJVMMemory(detailedStatus);
+                        detailedStatus = new TotalJVMMemory(detailedStatus, detailFacade);
                         logger.info(detailedStatus.getStatusDesc());
                     }
                     case "jreVersion" -> {
-                        detailedStatus = new JreVersion(detailedStatus);
+                        detailedStatus = new JreVersion(detailedStatus, detailFacade);
                         logger.info(detailedStatus.getStatusDesc());
                     }
                     case "tempLocation" -> {
-                        detailedStatus = new TempLocation(detailedStatus);
+                        detailedStatus = new TempLocation(detailedStatus, detailFacade);
                         System.out.println(detailedStatus.getStatusDesc());
                     }
                     default -> System.out.println("Unknown server detail: " + currentDetail);
