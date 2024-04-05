@@ -3,14 +3,21 @@ package com.acme.statusmgr.beans.decorators;
 import com.acme.servermgr.ServerManager;
 import com.acme.statusmgr.beans.ServerInterface;
 import com.acme.statusmgr.beans.facade.DetailFacadeInterface;
-
+/**
+ * Abstract class serving as a base for decorators to add functionality to ServerInterface implementations.
+ */
 public abstract class DecoratorAbstractClass implements ServerInterface {
-    /**
-     * requestCost constant will have to be changed if we change costs or calc dynamically
-     */
-    protected ServerInterface compiledDetails;
 
+    protected ServerInterface compiledDetails;
     protected DetailFacadeInterface detailFacade;
+
+    /**
+     * Construct a Decorator using information passed in to obtain details of environment.
+     * This class must append information about specific requested detail and added cost of obtaining the information.
+     *
+     * @param compiledDetails The compiled details to be decorated.
+     * @param detailFacade the detail facade to be used for retrieving detailed information.
+     */
     public DecoratorAbstractClass(ServerInterface compiledDetails, DetailFacadeInterface detailFacade) {
         this.compiledDetails = compiledDetails;
         this.detailFacade = detailFacade;

@@ -2,8 +2,15 @@ package com.acme.statusmgr.beans.decorators;
 
 import com.acme.statusmgr.beans.ServerInterface;
 import com.acme.statusmgr.beans.facade.DetailFacadeInterface;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+/**
+ * Decorator class for adding information about file location to the status description
+ * and increasing the request cost.
+ */
 public class TempLocation extends DecoratorAbstractClass{
+
+    Logger logger = LoggerFactory.getLogger("TempLocationDecorator");
 
     public TempLocation(ServerInterface compiledDetails, DetailFacadeInterface detailFacade) {
         super(compiledDetails, detailFacade);
@@ -17,7 +24,9 @@ public class TempLocation extends DecoratorAbstractClass{
 
     @Override
     public Integer getRequestCost() {
-        return super.getRequestCost() + 29;
+        logger.info("adding addedCost");
+        int addedCost = 29;
+        return super.getRequestCost() + addedCost;
     }
 
 

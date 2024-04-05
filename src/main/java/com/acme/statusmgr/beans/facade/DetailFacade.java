@@ -1,5 +1,7 @@
 package com.acme.statusmgr.beans.facade;
 
+import com.acme.servermgr.ServerManager;
+
 public class DetailFacade implements DetailFacadeInterface{
     @Override
     public int getAvailableProcessors() {
@@ -24,5 +26,10 @@ public class DetailFacade implements DetailFacadeInterface{
     @Override
     public String getTempLocation() {
         return System.getenv("TEMP");
+    }
+
+    @Override
+    public String getStatus() {
+        return ServerManager.getCurrentServerStatus();
     }
 }
