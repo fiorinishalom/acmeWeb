@@ -30,6 +30,19 @@ The `name` parameter value overrides the default value of “Anonymous” and is
 {"id":2,"contentHeader":"Server Status requested by Moishe","statusDesc":"Server is up"}
 ----`
 
+You can further customize the greeting with an optional `detail` parameter in the query string for up to 5 separate environment details:
+
+http://localhost:8080/server/status/detailed?name=Yankel&details=availableProcessors,freeJVMMemory,totalJVMMemory,jreVersion,tempLocation
+
+The `detail` parameter value dynamically adds details and cost to the default response per requested detail as reflected in the response:
+
+`---- [source, json]
+{"requestCost":72,"statusDesc":"Server is up, and there are 8 processors available, and there are 24004616 bytes of JVM memory free, and there is a total of 56623104 bytes of JVM memory, and the JRE version is 17.0.2+8-LTS-86, and the server's temp file location is C:\\Users\\SHALOM~1\\AppData\\Local\\Temp","id":1,"contentHeader":"Server Status requested by Yankel"}
+----`
+
+No details or invalid details such as http://localhost:8080/server/status/detailed?name=Yankel&details=availableProcessors,junkERROR
+will result in an error.
+
 **--> Syntax for URLS:**
 *    All start with /server
 *    /status  will give back status of server

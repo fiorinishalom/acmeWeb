@@ -15,6 +15,7 @@
  */
 package com.acme.statusmgr;
 
+import com.acme.statusmgr.beans.facade.MockDetailFacade;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,12 +40,14 @@ public class StatusControllerDetailedTest {
     @Autowired
     private MockMvc mockMvc;
 
+
     /**
      * Since this is a test, specify that all tests should use dummy system data.
      */
     @BeforeAll
     public static void beforeAll() {
-       //todo StatusController.setSystemInfoFacade(null /* todo: Inject appropriate object */);
+        StatusController.setSystemInfoFacade(new MockDetailFacade());
+
     }
 
 
@@ -63,7 +66,7 @@ public class StatusControllerDetailedTest {
 
 
     /**
-     * Tests that the server can handle requests with the "freeJVMMemory" detail.
+     * Tests that the server can handle requests with the "FreeJVMMemory" detail.
      * @throws Exception if something goes wrong while using the mock server
      */
     @Test
@@ -77,7 +80,7 @@ public class StatusControllerDetailedTest {
 
 
     /**
-     * Tests that the server can handle requests with the "totalJVMMemory" detail.
+     * Tests that the server can handle requests with the "TotalJVMMemory" detail.
      * @throws Exception if something goes wrong while using the mock server
      */
     @Test
